@@ -1,0 +1,6 @@
+framework module Pods_BraintreeModule {
+  umbrella header "Pods-BraintreeModule-umbrella.h"
+
+  export *
+  module * { export * }
+}
