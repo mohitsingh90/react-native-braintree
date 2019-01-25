@@ -2,6 +2,7 @@ package com.braintreemodule;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -18,21 +19,22 @@ import java.util.Objects;
 
 public class BraintreeDropinView extends AppCompatActivity {
 
-    int REQUEST_CODE = 404;
-    static Callback successCallback;
+    int REQUEST_CODE = 4949;
+   // static Callback successCallback;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DropInRequest dropInRequest = new DropInRequest().clientToken(BraintreeView.clientToken);
+        getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
+        DropInRequest dropInRequest = new DropInRequest().clientToken(getIntent().getStringExtra("clientToken"));//new DropInRequest().clientToken(BraintreeView.clientToken);
         startActivityForResult(dropInRequest.getIntent(this), REQUEST_CODE);
     }
 
-     public void onBraintreeSubmit( String clientToken,Callback successCallback) {
+     /*public void onBraintreeSubmit( String clientToken,Callback successCallback) {
         DropInRequest dropInRequest = new DropInRequest().clientToken(clientToken);
-        BraintreeDropinView.successCallback = successCallback;
+        //BraintreeDropinView.successCallback = successCallback;
         startActivityForResult(dropInRequest.getIntent(this), REQUEST_CODE);
-    }
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -40,14 +42,17 @@ public class BraintreeDropinView extends AppCompatActivity {
                 DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
                 Log.d("msgNonce", result.getPaymentMethodNonce().getNonce());
                 BraintreeView.successCallback.invoke(null,result.getPaymentMethodNonce().getNonce());
+                finish();
 
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 // the user canceled
                 Log.d("mylog", "user canceled");
+                finish();
             } else {
                 // handle errors here, an exception may be available in
                 Exception error = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
                 Log.d("mylog", "Error : " + error.toString());
+                finish();
             }
 
     }

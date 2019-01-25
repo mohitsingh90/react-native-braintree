@@ -22,7 +22,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 
-public class BraintreeView extends ReactContextBaseJavaModule implements ActivityEventListener {
+public class BraintreeView extends ReactContextBaseJavaModule {
     public  static  String result = "";
     static Callback successCallback;
     static String clientToken;
@@ -33,7 +33,7 @@ public class BraintreeView extends ReactContextBaseJavaModule implements Activit
     {
         super(reactContext);
         this.reactContext = reactContext;
-        this.reactContext.addActivityEventListener(this);
+        //this.reactContext.addActivityEventListener(this);
     }
 
     /*@ReactMethod
@@ -46,10 +46,15 @@ public class BraintreeView extends ReactContextBaseJavaModule implements Activit
     public void showBraintreeDropin(String clientToken, final Callback successCallback){
 
 
-        DropInRequest dropInRequest = new DropInRequest().clientToken(clientToken);
+        /*DropInRequest dropInRequest = new DropInRequest().clientToken(clientToken);
         BraintreeDropinView.successCallback = successCallback;
         Intent intent = dropInRequest.getIntent(getCurrentActivity());
-        getCurrentActivity().startActivityForResult(intent, Activity.RESULT_OK);
+        getCurrentActivity().startActivityForResult(intent, Activity.RESULT_OK);*/
+
+        BraintreeView.successCallback = successCallback;
+        Intent intent = new Intent(reactContext,BraintreeDropinView.class);
+        intent.putExtra("clientToken",clientToken);
+        reactContext.startActivity(intent);
 
     }
 
@@ -59,7 +64,7 @@ public class BraintreeView extends ReactContextBaseJavaModule implements Activit
     }
 
 
-    @Override
+    /*@Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
@@ -79,5 +84,5 @@ public class BraintreeView extends ReactContextBaseJavaModule implements Activit
     @Override
     public void onNewIntent(Intent intent) {
 
-    }
+    }*/
 }

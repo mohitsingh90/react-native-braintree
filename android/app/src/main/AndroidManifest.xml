@@ -21,7 +21,10 @@
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-        <activity android:name="BraintreeDropinView"/>
+        <activity
+            android:name="BraintreeDropinView"
+            android:theme="@style/Theme.AppCompat.Translucent"/>
+
     </application>
 
 </manifest>
